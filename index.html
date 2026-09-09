@@ -633,11 +633,181 @@
     }
     .reveal{opacity:1;transform:none;}
   }
+
+  /* ============================================================
+     REFINEMENT LAYER — depth, choreography, micro-interaction
+     ============================================================ */
+
+  /* -- Browser surfaces: the parts we did not draw still carry the design -- */
+  ::selection{background:rgba(211,169,78,0.26);color:#fff;}
+  html{scrollbar-color:var(--line) var(--bg);}
+  ::-webkit-scrollbar{width:11px;height:11px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border:3px solid var(--bg);border-radius:6px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+  .field input,.field textarea,.field select{caret-color:var(--gold);}
+
+  /* -- Typography polish -- */
+  h1,.sec-title,.stage h5,.ethics-card h5,.prepare h5,.intake-form h4,
+  .pricing-panel h4,.faq summary{text-wrap:balance;}
+  .hero-sub,.sec-lede,.about-text p,.faq .answer{text-wrap:pretty;}
+  .kpi-num{font-variant-numeric:tabular-nums;}
+
+  /* -- Reading progress -- */
+  .progress{
+    position:fixed;top:0;left:0;right:0;height:2px;z-index:90;
+    transform:scaleX(0);transform-origin:0 50%;
+    background:linear-gradient(90deg,var(--gold-dim),var(--gold));
+    pointer-events:none;will-change:transform;
+  }
+
+  /* -- Hero atmosphere: warm bloom, signature plot, fine grain -- */
+  .hero .wrap,.hero .kpi-strip{position:relative;z-index:2;}
+  .hero::before{
+    content:"";position:absolute;top:-26%;left:50%;width:min(1000px,120%);height:560px;
+    transform:translateX(-50%);pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse at center,rgba(211,169,78,0.11) 0%,rgba(211,169,78,0) 62%);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:3;opacity:0.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-plot{
+    position:absolute;left:0;right:0;bottom:96px;height:min(34%,208px);
+    width:100%;pointer-events:none;z-index:1;opacity:.42;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),
+                       linear-gradient(180deg,transparent,#000 46%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),
+                       linear-gradient(180deg,transparent,#000 46%);
+            mask-composite:intersect;
+  }
+  .hero-plot .d{fill:var(--gold);opacity:0;}
+  .hero-plot .fit{stroke:var(--signal);stroke-width:2.4;stroke-linecap:round;vector-effect:non-scaling-stroke;}
+  .js .hero-plot .d{animation:dotIn .5s cubic-bezier(.16,1,.3,1) both;}
+  .js .hero-plot .fit{stroke-dasharray:1200;stroke-dashoffset:1200;animation:fitIn 1.5s cubic-bezier(.16,1,.3,1) .75s both;}
+  @keyframes dotIn{from{opacity:0;transform:translateY(6px);}to{opacity:.85;transform:none;}}
+  @keyframes fitIn{to{stroke-dashoffset:0;}}
+  @media (max-width:860px){ .hero-plot{display:none;} }
+
+  /* -- Choreography: the section fades, its parts arrive in sequence -- */
+  .js .reveal{transform:none;transition:opacity .5s ease;}
+  .js .reveal :is(.verify-grid,.stack-grid,.process,.price-points,.eng-grid,.ethics-grid) > *,
+  .js .reveal .spec-table tbody tr,
+  .js .reveal .faq details,
+  .js .reveal .prepare,
+  .js .reveal .intake-form{
+    opacity:0;transform:translateY(16px);
+    transition:opacity .62s cubic-bezier(.16,1,.3,1),transform .62s cubic-bezier(.16,1,.3,1);
+  }
+  .js .reveal.in :is(.verify-grid,.stack-grid,.process,.price-points,.eng-grid,.ethics-grid) > *,
+  .js .reveal.in .spec-table tbody tr,
+  .js .reveal.in .faq details,
+  .js .reveal.in .prepare,
+  .js .reveal.in .intake-form{opacity:1;transform:none;}
+  .js .reveal.in :is(.verify-grid,.stack-grid,.process,.price-points,.eng-grid,.ethics-grid) > *:nth-child(2),
+  .js .reveal.in .spec-table tbody tr:nth-child(2),
+  .js .reveal.in .faq details:nth-of-type(2){transition-delay:.07s;}
+  .js .reveal.in :is(.verify-grid,.stack-grid,.process,.price-points,.eng-grid,.ethics-grid) > *:nth-child(3),
+  .js .reveal.in .spec-table tbody tr:nth-child(3),
+  .js .reveal.in .faq details:nth-of-type(3){transition-delay:.14s;}
+  .js .reveal.in :is(.process,.price-points) > *:nth-child(4),
+  .js .reveal.in .spec-table tbody tr:nth-child(4),
+  .js .reveal.in .faq details:nth-of-type(4){transition-delay:.21s;}
+  .js .reveal.in .spec-table tbody tr:nth-child(5),
+  .js .reveal.in .faq details:nth-of-type(5){transition-delay:.28s;}
+  .js .reveal.in .spec-table tbody tr:nth-child(6),
+  .js .reveal.in .faq details:nth-of-type(6){transition-delay:.35s;}
+  .js .reveal.in .faq details:nth-of-type(n+7){transition-delay:.42s;}
+
+  /* -- Primary button: drawn arrow, consistent stroke -- */
+  .btn-primary::after{
+    content:"";display:inline-block;width:14px;height:10px;margin-left:10px;vertical-align:middle;
+    background:currentColor;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 10'%3E%3Cpath d='M1 5h11M8.6 1.6 12 5 8.6 8.4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 10'%3E%3Cpath d='M1 5h11M8.6 1.6 12 5 8.6 8.4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    transition:transform .28s cubic-bezier(.16,1,.3,1);
+  }
+  .btn-primary:hover::after{transform:translateX(4px);}
+
+  /* -- Nav: hover and current-section underline (desktop only) -- */
+  @media (min-width:821px){
+    .nav-links li > a:not(.nav-cta){position:relative;}
+    .nav-links li > a:not(.nav-cta)::after{
+      content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:var(--gold);
+      transform:scaleX(0);transform-origin:0 50%;
+      transition:transform .3s cubic-bezier(.16,1,.3,1);
+    }
+    .nav-links li > a:not(.nav-cta):hover::after,
+    .nav-links li > a.current::after{transform:scaleX(1);}
+    .nav-links li > a.current{color:var(--gold);}
+  }
+
+  /* -- Table rows: hover indicator instead of a flat wash -- */
+  .spec-table tbody tr td{transition:background .25s ease;}
+  .spec-table tbody td:first-child{position:relative;}
+  .spec-table tbody td:first-child::before{
+    content:"";position:absolute;left:-10px;top:16px;bottom:16px;width:1.5px;background:var(--gold);
+    transform:scaleY(0);transform-origin:50% 0;
+    transition:transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .spec-table tbody tr:hover td:first-child::before{transform:scaleY(1);}
+
+  /* -- Card elevation on hover -- */
+  .stack-card,.ethics-card,.seal{transition:border-color .3s ease,transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s ease;}
+  .stack-card:hover,.ethics-card:hover{
+    border-color:var(--gold-dim);transform:translateY(-3px);
+    box-shadow:0 20px 44px -30px rgba(0,0,0,0.85);
+  }
+  .eng-card:hover{box-shadow:0 20px 44px -30px rgba(0,0,0,0.85);}
+  .chip{transition:border-color .25s ease,color .25s ease,transform .25s ease;}
+  .chip:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
+
+  /* -- Portrait: slow lift, warm rim -- */
+  .portrait-card{transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s ease;}
+  .portrait-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 40px 84px -30px rgba(211,169,78,0.14),0 24px 54px -22px rgba(0,0,0,0.72);
+  }
+
+  /* -- FAQ: plus that morphs into a minus, answer eases in -- */
+  .faq summary::after{content:none;}
+  .faq summary{position:relative;}
+  .faq summary .ico{
+    position:absolute;right:6px;top:50%;width:14px;height:14px;transform:translateY(-50%);
+    pointer-events:none;
+  }
+  .faq summary .ico::before,.faq summary .ico::after{
+    content:"";position:absolute;background:var(--gold);
+    transition:transform .32s cubic-bezier(.16,1,.3,1),opacity .2s ease;
+  }
+  .faq summary .ico::before{left:0;right:0;top:6.25px;height:1.5px;}
+  .faq summary .ico::after{top:0;bottom:0;left:6.25px;width:1.5px;}
+  .faq details[open] summary .ico::after{transform:scaleY(0);opacity:0;}
+  .faq details[open] .answer{animation:faqIn .38s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes faqIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+
+  /* -- Form focus: warmer, less abrupt -- */
+  .field input,.field select,.field textarea{transition:border-color .25s ease,box-shadow .25s ease,background .25s ease;}
+  .field input:focus,.field select:focus,.field textarea:focus{background:#0C1322;}
+
+  @media (prefers-reduced-motion: reduce){
+    .js .hero-plot .d{animation:none;opacity:.85;}
+    .js .hero-plot .fit{animation:none;stroke-dashoffset:0;}
+    .js .reveal :is(.verify-grid,.stack-grid,.process,.price-points,.eng-grid,.ethics-grid) > *,
+    .js .reveal .spec-table tbody tr,
+    .js .reveal .faq details,
+    .js .reveal .prepare,
+    .js .reveal .intake-form{opacity:1;transform:none;}
+    .progress{display:none;}
+    .faq details[open] .answer{animation:none;}
+  }
 </style>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
 <nav>
   <div class="wrap">
@@ -658,6 +828,7 @@
 
 <main id="main">
 <header class="hero grid-bg" id="top">
+  <svg class="hero-plot" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true" focusable="false"><g class="dots"><circle class="d" cx="55" cy="316" r="3.8" style="animation-delay:0.55s"/><circle class="d" cx="101" cy="300" r="3.0" style="animation-delay:0.59s"/><circle class="d" cx="135" cy="318" r="3.0" style="animation-delay:0.63s"/><circle class="d" cx="159" cy="322" r="3.0" style="animation-delay:0.67s"/><circle class="d" cx="196" cy="307" r="3.8" style="animation-delay:0.71s"/><circle class="d" cx="234" cy="266" r="3.0" style="animation-delay:0.75s"/><circle class="d" cx="281" cy="325" r="3.0" style="animation-delay:0.79s"/><circle class="d" cx="310" cy="261" r="3.0" style="animation-delay:0.83s"/><circle class="d" cx="361" cy="319" r="3.8" style="animation-delay:0.87s"/><circle class="d" cx="397" cy="259" r="3.0" style="animation-delay:0.91s"/><circle class="d" cx="446" cy="218" r="3.0" style="animation-delay:0.95s"/><circle class="d" cx="480" cy="232" r="3.0" style="animation-delay:0.99s"/><circle class="d" cx="497" cy="207" r="3.8" style="animation-delay:1.03s"/><circle class="d" cx="539" cy="262" r="3.0" style="animation-delay:1.07s"/><circle class="d" cx="572" cy="232" r="3.0" style="animation-delay:1.11s"/><circle class="d" cx="623" cy="204" r="3.0" style="animation-delay:1.14s"/><circle class="d" cx="657" cy="167" r="3.8" style="animation-delay:1.18s"/><circle class="d" cx="681" cy="171" r="3.0" style="animation-delay:1.22s"/><circle class="d" cx="735" cy="182" r="3.0" style="animation-delay:1.26s"/><circle class="d" cx="762" cy="188" r="3.0" style="animation-delay:1.30s"/><circle class="d" cx="804" cy="153" r="3.8" style="animation-delay:1.34s"/><circle class="d" cx="850" cy="181" r="3.0" style="animation-delay:1.38s"/><circle class="d" cx="872" cy="161" r="3.0" style="animation-delay:1.42s"/><circle class="d" cx="917" cy="179" r="3.0" style="animation-delay:1.46s"/><circle class="d" cx="960" cy="117" r="3.8" style="animation-delay:1.50s"/><circle class="d" cx="1004" cy="92" r="3.0" style="animation-delay:1.54s"/><circle class="d" cx="1026" cy="142" r="3.0" style="animation-delay:1.58s"/><circle class="d" cx="1056" cy="109" r="3.0" style="animation-delay:1.62s"/><circle class="d" cx="1090" cy="116" r="3.8" style="animation-delay:1.66s"/><circle class="d" cx="1147" cy="99" r="3.0" style="animation-delay:1.70s"/></g><line class="fit" x1="60" y1="348" x2="1140" y2="92"/></svg>
   <div class="wrap hero-grid">
     <div>
       <div class="eyebrow">Statistical Consulting · Theses &amp; Dissertations</div>
@@ -806,7 +977,7 @@
 <section class="section" id="methods">
   <div class="wrap reveal">
     <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Methods &amp; Software</h2></div>
-    <p class="sec-lede">Your panel will ask which test you used and why. These are the tools and techniques the engagement draws on — the choice is always driven by your research questions, never by convenience.</p>
+    <p class="sec-lede">Your panel will ask which test you used and why. These are the tools and techniques the engagement draws on. The choice is always driven by your research questions, never by convenience.</p>
     <div class="stack-grid">
       <div class="stack-card">
         <h5>Software</h5>
@@ -842,7 +1013,7 @@
         </div>
       </div>
     </div>
-    <p class="stack-note">If your institution requires a specific package or output format, say so at the diagnostic call — deliverables are produced to match your school's template, not a generic one.</p>
+    <p class="stack-note">If your institution requires a specific package or output format, say so at the diagnostic call, and deliverables are produced to match your school's template, not a generic one.</p>
   </div>
 </section>
 
@@ -853,7 +1024,7 @@
     <div class="process">
       <div class="stage"><div class="stage-t">STAGE A</div><h5>Diagnostic Call</h5><p>Review your topic, chapter status, and panel feedback so far. No cost, no obligation.</p></div>
       <div class="stage"><div class="stage-t">STAGE B</div><h5>Scoped Proposal</h5><p>Fixed-fee quote in PHP, tied to specific deliverables and a realistic timeline.</p></div>
-      <div class="stage"><div class="stage-t">STAGE C</div><h5>Working Sessions</h5><p>Structured sessions — in person, call, or async — with drafts shared for your review.</p></div>
+      <div class="stage"><div class="stage-t">STAGE C</div><h5>Working Sessions</h5><p>Structured sessions in person, by call, or async, with drafts shared for your review.</p></div>
       <div class="stage"><div class="stage-t">STAGE D</div><h5>Defense Support</h5><p>Final alignment before submission, plus mock-panel prep on your specific findings.</p></div>
     </div>
 
@@ -871,7 +1042,7 @@
         </div>
         <div class="price-point">
           <span class="pp-label">Scoped to your stage</span>
-          <p>Engage a single service — a sample size computation, one analysis chapter — or the full journey. You pay for the stage you are in.</p>
+          <p>Engage a single service (a sample size computation, one analysis chapter) or the full journey. You pay for the stage you are in.</p>
         </div>
       </div>
     </div>
@@ -908,7 +1079,7 @@
       <div class="ethics-card">
         <h5>What it is not</h5>
         <ul>
-          <li><span class="no">×</span> Ghostwriting. Your dissertation stays yours — the argument, the interpretation, and the defense are your work</li>
+          <li><span class="no">×</span> Ghostwriting. Your dissertation stays yours. The argument, the interpretation, and the defense are your work</li>
           <li><span class="no">×</span> A service that hands over results you cannot account for when asked</li>
           <li><span class="no">×</span> Anything that requires concealment from your institution</li>
         </ul>
@@ -919,7 +1090,7 @@
         <h5>Your data</h5>
         <ul>
           <li><span class="yes">✓</span> Datasets, drafts, and instruments are treated as confidential and are not shared or reused</li>
-          <li><span class="yes">✓</span> A non-disclosure agreement can be signed before any file is sent — for clinical, corporate, or government data, just ask</li>
+          <li><span class="yes">✓</span> A non-disclosure agreement can be signed before any file is sent. For clinical, corporate, or government data, just ask</li>
           <li><span class="yes">✓</span> Where your study involves human participants, analysis is conducted in line with your institution's ethics-review requirements</li>
         </ul>
       </div>
@@ -941,40 +1112,40 @@
     <p class="sec-lede">The things people ask on the diagnostic call, answered here so you can decide whether to book one.</p>
     <div class="faq">
       <details>
-        <summary>I'm already halfway through. Is it too late to bring in a statistician?</summary>
-        <p class="answer">No. Most engagements begin mid-stream — usually right after a panel returns comments on the methodology or the results chapter. Coming in later simply changes the scope: the first step becomes assessing what holds and what has to be reworked, rather than designing from scratch.</p>
+        <summary>I'm already halfway through. Is it too late to bring in a statistician?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">No. Most engagements begin mid-stream, usually right after a panel returns comments on the methodology or the results chapter. Coming in later simply changes the scope: the first step becomes assessing what holds and what has to be reworked, rather than designing from scratch.</p>
       </details>
       <details>
-        <summary>My panel rejected my statistical treatment. Can that be fixed?</summary>
+        <summary>My panel rejected my statistical treatment. Can that be fixed?<span class="ico" aria-hidden="true"></span></summary>
         <p class="answer">Usually, yes. Rejected treatments generally trace back to one of a few causes: a test that does not match the level of measurement, a design that cannot answer the stated research questions, or assumptions that were never checked. The work is to identify which of those applies, correct it, and prepare you to explain the change to the same panel that raised it.</p>
       </details>
       <details>
-        <summary>Do you work with qualitative studies, or only numbers?</summary>
-        <p class="answer">Both. Qualitative work — interpretative phenomenological analysis, phenomenology, thematic coding — is a regular part of the practice, as is mixed-methods design where the two strands have to be integrated rather than simply reported side by side.</p>
+        <summary>Do you work with qualitative studies, or only numbers?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">Both. Qualitative work (interpretative phenomenological analysis, phenomenology, thematic coding) is a regular part of the practice, as is mixed-methods design where the two strands have to be integrated rather than simply reported side by side.</p>
       </details>
       <details>
-        <summary>Which software will my analysis be done in?</summary>
-        <p class="answer"><strong>SPSS, R, STATA, or Python</strong> — whichever your institution expects or you are most comfortable defending. If your school requires SPSS output in a particular format, that is what you receive. Tell me the requirement at the diagnostic call.</p>
+        <summary>Which software will my analysis be done in?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer"><strong>SPSS, R, STATA, or Python</strong>, whichever your institution expects or you are most comfortable defending. If your school requires SPSS output in a particular format, that is what you receive. Tell me the requirement at the diagnostic call.</p>
       </details>
       <details>
-        <summary>How long does it take?</summary>
-        <p class="answer">It depends entirely on scope and on the state of your data. A sample size computation is a short piece of work; a full analysis chapter on a dataset that still needs cleaning is not. Rather than quote a generic turnaround, the scoped proposal in Stage B carries a timeline tied to your specific deliverables — and it is built around your defense date, so bring that date to the call.</p>
+        <summary>How long does it take?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">It depends entirely on scope and on the state of your data. A sample size computation is a short piece of work; a full analysis chapter on a dataset that still needs cleaning is not. Rather than quote a generic turnaround, the scoped proposal in Stage B carries a timeline tied to your specific deliverables, and it is built around your defense date, so bring that date to the call.</p>
       </details>
       <details>
-        <summary>Do you follow my university's format?</summary>
-        <p class="answer">Yes. Tables, statistical notation, and chapter structure are produced to your institution's manual — APA or otherwise. Send the template or a recently approved manuscript from your program and deliverables are matched to it.</p>
+        <summary>Do you follow my university's format?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">Yes. Tables, statistical notation, and chapter structure are produced to your institution's manual, APA or otherwise. Send the template or a recently approved manuscript from your program and deliverables are matched to it.</p>
       </details>
       <details>
-        <summary>Is this considered cheating?</summary>
-        <p class="answer">No — and this is worth being precise about. Consulting a statistician on research design and analysis is standard practice in academic and clinical research; it is why published studies routinely acknowledge one. What distinguishes it from misconduct is that the work is disclosed and that you can account for every decision in it. That is the standard this practice holds to, which is why the process includes walking you through the reasoning rather than only handing over output. See <a href="#ethics" style="color:var(--gold);">Ethics &amp; Confidentiality</a> above.</p>
+        <summary>Is this considered cheating?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">No, and this is worth being precise about. Consulting a statistician on research design and analysis is standard practice in academic and clinical research; it is why published studies routinely acknowledge one. What distinguishes it from misconduct is that the work is disclosed and that you can account for every decision in it. That is the standard this practice holds to, which is why the process includes walking you through the reasoning rather than only handing over output. See <a href="#ethics" style="color:var(--gold);">Ethics &amp; Confidentiality</a> above.</p>
       </details>
       <details>
-        <summary>I'm outside Metro Manila, or abroad. Does that work?</summary>
+        <summary>I'm outside Metro Manila, or abroad. Does that work?<span class="ico" aria-hidden="true"></span></summary>
         <p class="answer">Yes. Sessions run by video call or asynchronously through email and messaging, which is how most engagements with working professionals run regardless of location. In-person sessions are possible where practical.</p>
       </details>
       <details>
-        <summary>What does the free diagnostic call actually cover?</summary>
-        <p class="answer">A review of your topic, your current chapter status, and any feedback your panel has already given — enough to tell you what the work would involve and whether it is worth engaging at all. There is no cost and no obligation to proceed.</p>
+        <summary>What does the free diagnostic call actually cover?<span class="ico" aria-hidden="true"></span></summary>
+        <p class="answer">A review of your topic, your current chapter status, and any feedback your panel has already given. That is enough to tell you what the work would involve and whether it is worth engaging at all. There is no cost and no obligation to proceed.</p>
       </details>
     </div>
   </div>
@@ -983,7 +1154,7 @@
 <section class="contact-band" id="contact">
   <div class="wrap">
     <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">Start the Conversation</h2></div>
-    <p class="sec-lede">Fill in what you know and the form will compose the message for you. Nothing is sent until you press send in your own email app — and nothing is stored on this page.</p>
+    <p class="sec-lede">Fill in what you know and the form will compose the message for you. Nothing is sent until you press send in your own email app, and nothing is stored on this page.</p>
 
     <div class="contact-layout">
       <form class="intake-form" id="intake" novalidate>
@@ -1083,7 +1254,7 @@
         <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
 
         <p class="form-note">
-          Pressing <strong>Compose My Inquiry</strong> opens your email app with everything filled in — review it, then send.
+          Pressing <strong>Compose My Inquiry</strong> opens your email app with everything filled in. Review it, then send.
           Prefer Messenger or Viber? Press <strong>Copy as Text</strong> and paste it there instead.
           This page has no server: nothing you type here is transmitted or saved anywhere until you send it yourself.
         </p>
@@ -1092,11 +1263,11 @@
       <div>
         <div class="prepare">
           <h5>What to prepare</h5>
-          <p>None of this is required to reach out — but the more of it you have, the more useful the first call is.</p>
+          <p>None of this is required to reach out, but the more of it you have, the more useful the first call is.</p>
           <ol>
-            <li><strong>Your topic and research questions</strong> — even a rough version</li>
+            <li><strong>Your topic and research questions</strong>, even a rough version</li>
             <li><strong>Your panel's comments</strong>, if you have already defended a proposal</li>
-            <li><strong>The state of your data</strong> — not yet collected, collecting, or ready to analyze</li>
+            <li><strong>The state of your data</strong>: not yet collected, collecting, or ready to analyze</li>
             <li><strong>Your school's manual or template</strong>, or a recently approved manuscript from your program</li>
             <li><strong>Your target defense date</strong>, so the timeline can be built backwards from it</li>
           </ol>
@@ -1211,13 +1382,13 @@
       "mainEntity": [
         { "@type": "Question", "name": "I'm already halfway through. Is it too late to bring in a statistician?", "acceptedAnswer": { "@type": "Answer", "text": "No. Most engagements begin mid-stream, usually right after a panel returns comments on the methodology or the results chapter. Coming in later changes the scope: the first step becomes assessing what holds and what has to be reworked, rather than designing from scratch." } },
         { "@type": "Question", "name": "My panel rejected my statistical treatment. Can that be fixed?", "acceptedAnswer": { "@type": "Answer", "text": "Usually, yes. Rejected treatments generally trace back to a test that does not match the level of measurement, a design that cannot answer the stated research questions, or assumptions that were never checked. The work is to identify which applies, correct it, and prepare you to explain the change to the same panel that raised it." } },
-        { "@type": "Question", "name": "Do you work with qualitative studies, or only numbers?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Qualitative work — interpretative phenomenological analysis, phenomenology, thematic coding — is a regular part of the practice, as is mixed-methods design where the two strands must be integrated rather than reported side by side." } },
-        { "@type": "Question", "name": "Which software will my analysis be done in?", "acceptedAnswer": { "@type": "Answer", "text": "SPSS, R, STATA, or Python — whichever your institution expects or you are most comfortable defending. If your school requires SPSS output in a particular format, that is what you receive." } },
+        { "@type": "Question", "name": "Do you work with qualitative studies, or only numbers?", "acceptedAnswer": { "@type": "Answer", "text": "Both. Qualitative work (interpretative phenomenological analysis, phenomenology, thematic coding) is a regular part of the practice, as is mixed-methods design where the two strands must be integrated rather than reported side by side." } },
+        { "@type": "Question", "name": "Which software will my analysis be done in?", "acceptedAnswer": { "@type": "Answer", "text": "SPSS, R, STATA, or Python, whichever your institution expects or you are most comfortable defending. If your school requires SPSS output in a particular format, that is what you receive." } },
         { "@type": "Question", "name": "How long does it take?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on scope and on the state of your data. Rather than a generic turnaround, the scoped proposal carries a timeline tied to your specific deliverables and built around your defense date." } },
         { "@type": "Question", "name": "Do you follow my university's format?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Tables, statistical notation, and chapter structure are produced to your institution's manual, APA or otherwise. Send the template or a recently approved manuscript from your program and deliverables are matched to it." } },
         { "@type": "Question", "name": "Is this considered cheating?", "acceptedAnswer": { "@type": "Answer", "text": "No. Consulting a statistician on research design and analysis is standard practice in academic and clinical research, which is why published studies routinely acknowledge one. What distinguishes it from misconduct is that the work is disclosed and that you can account for every decision in it. This is consulting and mentorship, not ghostwriting." } },
         { "@type": "Question", "name": "I'm outside Metro Manila, or abroad. Does that work?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Sessions run by video call or asynchronously through email and messaging, which is how most engagements with working professionals run regardless of location. In-person sessions are possible where practical." } },
-        { "@type": "Question", "name": "What does the free diagnostic call actually cover?", "acceptedAnswer": { "@type": "Answer", "text": "A review of your topic, your current chapter status, and any feedback your panel has already given — enough to tell you what the work would involve and whether it is worth engaging at all. There is no cost and no obligation to proceed." } }
+        { "@type": "Question", "name": "What does the free diagnostic call actually cover?", "acceptedAnswer": { "@type": "Answer", "text": "A review of your topic, your current chapter status, and any feedback your panel has already given. That is enough to tell you what the work would involve and whether it is worth engaging at all. There is no cost and no obligation to proceed." } }
       ]
     }
   ]
@@ -1229,8 +1400,10 @@
   "use strict";
 
   /* ---- Scroll reveal ---- */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if ('IntersectionObserver' in window && !reduceMotion) {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
@@ -1244,6 +1417,81 @@
   } else {
     reveals.forEach(function(el){ el.classList.add('in'); });
   }
+
+  /* ---- Reading progress, current-section nav, and the KPI count-up all
+          ride one passive scroll handler: no extra observers, and every
+          branch is reachable without IntersectionObserver. ---- */
+  var bar = document.getElementById('progress');
+
+  var spy = [];
+  document.querySelectorAll('.nav-links a[href^="#"]').forEach(function(a){
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if (el) spy.push({ link: a, el: el, top: 0 });
+  });
+
+  function measure(){
+    spy.forEach(function(s){ s.top = s.el.getBoundingClientRect().top + window.scrollY; });
+    spy.sort(function(x, y){ return x.top - y.top; });   // nav order != document order
+  }
+
+  function markCurrent(){
+    if (!spy.length) return;
+    var line = window.scrollY + window.innerHeight * 0.32;
+    var active = null;
+    for (var i = 0; i < spy.length; i++) { if (spy[i].top <= line) active = spy[i]; }
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) {
+      active = spy[spy.length - 1];                      // bottom of page: last section wins
+    }
+    spy.forEach(function(s){
+      var on = (s === active);
+      s.link.classList.toggle('current', on);
+      if (on) { s.link.setAttribute('aria-current', 'true'); }
+      else { s.link.removeAttribute('aria-current'); }
+    });
+  }
+
+  function paintProgress(){
+    if (!bar || reduceMotion) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  }
+
+  /* Count the numeric KPIs up once, the first time the strip is on screen.
+     Non-numeric values ("PD 997", "Sr.") are left exactly as authored. */
+  var kpiSpent = reduceMotion;
+  function countKpis(){
+    if (kpiSpent) return;
+    var strip = document.querySelector('.kpi-strip');
+    if (!strip) { kpiSpent = true; return; }
+    var r = strip.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight * 0.92) return;
+    kpiSpent = true;
+    document.querySelectorAll('.kpi-num').forEach(function(el){
+      var m = /^(\d+)(\D*)$/.exec(el.textContent.trim());
+      if (!m) return;
+      var target = parseInt(m[1], 10), suffix = m[2], t0 = null, DUR = 900, done = false;
+      function finish(){ if (done) return; done = true; el.textContent = target + suffix; }
+      el.style.minWidth = el.getBoundingClientRect().width + 'px';
+      // The real figure must never be left on screen wrong. Nothing is written
+      // outside a genuine animation frame, and if frames are throttled or
+      // suspended this snaps the true value back in.
+      window.setTimeout(finish, DUR + 700);
+      window.requestAnimationFrame(function step(ts){
+        if (done) return;
+        if (t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / DUR);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + suffix;
+        if (k < 1) window.requestAnimationFrame(step); else finish();
+      });
+    });
+  }
+
+  function onScroll(){ paintProgress(); markCurrent(); countKpis(); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function(){ measure(); onScroll(); }, { passive: true });
+  measure();
+  onScroll();
 
   /* ---- Close mobile nav after choosing a link ---- */
   var navToggle = document.getElementById('nav-toggle');
